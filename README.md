@@ -1,7 +1,11 @@
 # Databricks-AI-challenge---2
 Learning and Practice purpose
 
-# Day 01 learnings in short- Delta conversion & optimization
+# challenge data setup 
+follow the instructions form below file 
+Challenge setup - [Link to Notebook](code/setup.ipynb)
+
+# Day 01 - Delta conversion & optimization
 📦 Delta Lake vs Parquet
 Parquet is just a file. Delta is a table system built on Parquet - adding a _delta_log/ transaction log that enables ACID transactions, time travel, schema enforcement, and OPTIMIZE.
 
@@ -24,4 +28,4 @@ Also learned that CREATE TABLE ... LOCATION '/tmp/...' fails in Databricks Free 
 
 Take a look at day 01 parcticle learing in notebook 
 
-Day 01 [Link to Notebook](code/delta_conversion_and_Optimization.ipynb)
+Day 01 [Link to Notebook](code/Day_01/delta_conversion_and_Optimization.ipynb)
