@@ -24,4 +24,4 @@ Also learned that CREATE TABLE ... LOCATION '/tmp/...' fails in Databricks Free 
 
 Take a look at day 01 parcticle learing in notebook 
 
-Day 01 [Link to Notebook](.code/delta_conversion_and_Optimization.ipynbb)
+Day 01 [Link to Notebook](code/delta_conversion_and_Optimization.ipynb)
