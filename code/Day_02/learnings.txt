@@ -1,0 +1,15 @@
+Day 2 — Medallion Architecture &
+Feature Engineering in PySpark
+Bronze -> Silver -> Gold | Data Quality | User-Level Aggregations
+
+*Medallion Architecture **
+What Is It?
+
+The Medallion Architecture (also called multi-hop architecture) is a data design pattern recommended by Databricks for organizing data in a Lakehouse.
+Data moves through three layers of progressively improving quality. Each layer has a strict purpose and no layer should be skipped.
+
+| **Layer**  | **Also Called**          | **Data State**                                                            | **Who Uses It**                    | **Format**                |
+|------------|--------------------------|---------------------------------------------------------------------------|------------------------------------|---------------------------|
+| **Bronze** | Raw / Landing Zone       | Exactly as received. No cleanup. Store everything including corrupt rows. | Data Engineers only                | Delta (strings preferred) |
+| **Silver** | Validated / Cleaned      | Deduped, null-handled, quality-checked, typed schema, enriched.           | Engineers + Data Scientists        | Delta (typed)             |
+| **Gold**   | Curated / Business-Ready | Aggregated, feature-engineered, one row per entity (user/product).        | Analysts + ML Engineers + Business | Delta (optimized)         |
