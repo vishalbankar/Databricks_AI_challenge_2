@@ -64,4 +64,4 @@ Bronze -> Silver -> Gold | Data Quality | User-Level Aggregations
 
 Take a look at day 01 parcticle learing in notebook 
 
-Day 02 [Link to Notebook](code/Day_02/Day_02_medallian_Archi & Feature Engg in PySpark.ipynb)
+Day 02 [Link to Notebook](code/Day_02/Day_02_medallian_Architecture_Feature_Engg.ipynb)
