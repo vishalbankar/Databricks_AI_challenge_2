@@ -126,4 +126,4 @@ The checkpoint is what made that work.
 Instead of running the stream continuously, availableNow processes all pending data and stops automatically. No manual interruption needed. Perfect for scheduled jobs and learning.
 
 Take a look at day 01 parcticle learing in notebook Day 04
-Day 04 [Link to Notebook](Day_04/Day_04_Structured%20Streaming.ipynb)
+Day 04 [Link to Notebook](Day_04/Day_04_Structured_Streaming.ipynb)
