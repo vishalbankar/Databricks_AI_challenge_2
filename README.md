@@ -92,6 +92,39 @@ Each notebook does ONE thing. Returns SUCCESS or FAIL. The orchestrator calls th
 ⏰ Scheduling - Set It and Forget It Created a Databricks Job with cron schedule: 0 0 9 * * ? (daily at 2 AM) Added 2 automatic retries with 5-minute delays Configured email alerts on failure
 
 Take a look at day 01 parcticle learing in notebook 
-https://github.com/vishalbankar/Databricks_AI_challenge_2/tree/8bf78e48b19db16293955b16006f8c9d7499a836/Day_03
 Day 03 [Link to Notebook](Day_03)
 
+# Day 04 Structured Streaming
+# Micro-batch | Checkpointing | Streaming -> Delta
+
+Structured Streaming — and honestly, it was the most mind-shifting concept so far.
+
+I always thought streaming meant completely different code. It doesn't.
+
+Here's what actually changed my thinking:
+
+🔷 Batch vs Streaming — it's just two lines
+Batch:  spark.read.format('delta').table(...)
+Stream: spark.readStream.format('delta').table(...)
+
+That's it. The transformations — filter(), groupBy(), withColumn() — are identical. Only the read and write methods change. The same ecommerce pipeline I built in Day 2 works as a stream with minimal changes.
+
+🔷 Micro-batch — not what I expected
+Structured Streaming doesn't process one event at a time. It collects all new data since the last run, processes it as a batch, writes results, then waits for the next trigger. This is called micro-batch and it's why the API looks exactly like batch code.
+
+🔷 Checkpointing — the memory of a stream
+Every micro-batch writes a checkpoint — a small folder that records exactly what was already processed. When the stream restarts after a failure or notebook re-run, it reads the checkpoint and continues from where it left off. No reprocessing. No duplicates.
+
+I tested this today:
+→ Run 1: streamed all existing ecommerce events (Oct + Nov 2019)
+→ Appended 3 new December events to the source table
+→ Run 2: stream picked up ONLY the 3 new rows
+
+The checkpoint is what made that work.
+
+🔷 trigger(availableNow=True) — the key for notebooks
+Instead of running the stream continuously, availableNow processes all pending data and stops automatically. No manual interruption needed. Perfect for scheduled jobs and learning.
+
+Take a look at day 01 parcticle learing in notebook Day 04
+
+Day 04 [Link to Notebook](Day_04/Day_04_Structured Streaming.ipynb)
