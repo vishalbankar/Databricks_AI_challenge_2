@@ -5,6 +5,67 @@ Learning and Practice purpose
 follow the instructions form below file 
 Challenge setup - [Link to Notebook](code/setup.ipynb)
 
+# Architecture 
+```
+									   END-TO-END ML PIPELINE ARCHITECTURE
+                                       Databricks • Delta Lake • MLflow
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+            ┌───────────────-──────────┐
+            │DATA SOURCE               │    (DATA INGESTION LAYERS)
+            │Ecommerce Event Logs (CSV)│
+            └─────────┬────────────────┘
+                      ▼
+              ┌───────────────┐     ┌───────────────┐     ┌───────────────┐								
+              │    BRONZE     │ --> │     SILVER    │ --> │      GOLD     │
+              │ Raw Data      │     │ Cleaned Data  │     │ ML Features   │								│ ─────── RETRAINING LOOP ───────   │
+              │ events_raw    │     │ events_clean  │     │ user_features │                             │                                   │
+              │ (Delta Lake)  │     │ (Delta Lake)  │     │ (Delta Lake)  │                             │             Trigger               │
+              │               │ --> │               │ --> │               │                             │    (schedule / drift / new data)  │
+              │ • Append only │     │ • Remove nulls│     │ • Aggregations│                             │  			   │                    │
+              │ • Raw events  │     │ • Deduplicate │     │ • User metrics│                             │  			   ▼                    │
+              │ • 109M rows   │     │ • Schema check│     │ • Feature set │                             │  		Rebuild Features            │
+              └───────────────┘     └───────────────┘     └───────────────┘                             │  			   │                    │
+              										 └─────────┬───────────┘                            │			   ▼                    │
+              												   │                                        │		 Retrain Model              │
+                                                               ▼                                        │			   │                    │
+                                                     ┌─────────────────────┐                            │ 			   ▼                    │
+                                                     │   ML DATA PREP      │                            │ 	  Evaluate Performance          │
+                                                     │ Train/Test Split    │                            │              │                    │
+                                                     │ Handle imbalance    │						    │    		   ▼                    │
+                                                     └─────────┬───────────┘						    │    	 Champion / Challenger      │
+                                                               │									    │    		   │                    │
+                                                               ▼									    │              ▼                    │
+                                                     ┌─────────────────────┐						    │           A/B Test                │
+                                                     │   MODEL TRAINING    │						    │              │                    │
+                                                     │ Spark MLlib         │						    │              ▼                    │
+                                                     │ Logistic Regression │						    │         Promote New Model         │
+                                                     │ Random Forest       │						    │              │                    │
+                                                     └─────────┬───────────┘                            │              ▼                    │
+                                                               │									    │         Archive Old Model         │
+                                                               ▼									    │                                   │
+                                                     ┌─────────────────────┐						    │                                   │
+                                                     │   MLFLOW TRACKING   │  																																				                                                              
+                                                     │ Experiments         │           																					                                                   
+                                                     │ Metrics + Params    │           																					                                                   
+                                                     │ Model Registry      │           																					                                                   
+                                                     └─────────┬───────────┘           																					                                                   
+                                                               │                       																					         
+                                                               ▼                       																					         
+                                                     ┌─────────────────────┐           																					         
+                                                     │   BATCH INFERENCE   │																					
+                                                     │ model.transform()   │																					
+                                                     │ Score all users     │																					
+                                                     └─────────┬───────────┘																					
+                                                               │																					
+                                                 ┌─────────────┴─────────────┐																					
+                                                 ▼                           ▼																					
+                                        ┌──────────────────┐       ┌──────────────────┐																					
+                                        │ USER PREDICTIONS │       │ RECOMMENDATIONS  │																					
+                                        │ predicted_buyer  │       │ ALS Model        │																					
+                                        │ purchase_prob    │       │ Top-5 products   │																					
+                                        └──────────────────┘       └──────────────────┘																					
+```
+
 # Day 01 - Delta conversion & optimization
 📦 Delta Lake vs Parquet
 
